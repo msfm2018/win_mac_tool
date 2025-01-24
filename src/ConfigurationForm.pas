@@ -9,7 +9,7 @@ uses
   Vcl.ExtCtrls, Vcl.Buttons, utils, u_json, System.IniFiles,
   Vcl.Imaging.pngimage, System.JSON, System.Generics.Collections, Vcl.Menus,
   ImgButton, winapi.UxTheme, ImgPanel, Vcl.Mask, System.Hash, System.ImageList,
-  Vcl.ImgList;
+  Vcl.ImgList, Vcl.Imaging.jpeg;
 
 type
   TCfgForm = class(TForm)
@@ -19,13 +19,39 @@ type
     filedit: TLabeledEdit;
     ComboBox1: TComboBox;
     ImgList: TImageList;
-    Panel1: TPanel;
+    pinfo: TPanel;
     ScrollBox1: TScrollBox;
-    Panel2: TPanel;
-    Panel3: TPanel;
+    pbottom: TPanel;
     CheckBox1: TCheckBox;
-    Button3: TButton;
     ListView1: TListView;
+    ImgPanel1: TImgPanel;
+    ImgPanel2: TImgPanel;
+    pnl_left: TPanel;
+    imgboxFace: TImage;
+    btnmsg_panel: TLabel;
+    btnorg_panel: TLabel;
+    Label1: TLabel;
+    pnl_right: TPanel;
+    p1: TPanel;
+    p2: TPanel;
+    Image2: TImage;
+    p_org: TPanel;
+    lblok: TImgPanel;
+    pnl1: TPanel;
+    Image1: TImage;
+    Image3: TImage;
+    btnLogin: TLabel;
+    edtNickName: TLabel;
+    edtSex: TLabel;
+    Label2: TLabel;
+    lbl_phone: TLabel;
+    MlSkinLabel1: TLabel;
+    MlSkinLabel2: TLabel;
+    MlSkinLabel3: TLabel;
+    MlSkinLabel5: TLabel;
+    Image4: TImage;
+    Memo1: TMemo;
+    ImgPanel3: TImgPanel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure imgEdit1DblClick(Sender: TObject);
@@ -36,10 +62,15 @@ type
     procedure ScrollBox1MouseEnter(Sender: TObject);
     procedure ScrollBox1MouseLeave(Sender: TObject);
     procedure CheckBox1Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
     procedure FormMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure ListView1DblClick(Sender: TObject);
     procedure ListView1Resize(Sender: TObject);
+    procedure ImgPanel2Click(Sender: TObject);
+    procedure btnmsg_panelClick(Sender: TObject);
+    procedure btnorg_panelClick(Sender: TObject);
+    procedure Image2MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure lblokClick(Sender: TObject);
+    procedure Label1Click(Sender: TObject);
   private
     file_map: TDictionary<string, string>;
     procedure AddFileInfoToJson(const Key, ImageFileName, FilePath, ToolTip: string);
@@ -50,15 +81,16 @@ type
 
     procedure PanelDblClick(Sender: TObject);
     procedure Buttoaction_translatoradd(Sender: TObject);
-    procedure closex(Sender: TObject);
     procedure AdjustLastColumnWidth;
     procedure translateDblClick(Sender: TObject);
+    procedure msg_board_state;
+    procedure org_board_state;
 
   public
     FShadowAlpha: Byte; // 阴影透明度 (0-255)
     FShadowColor: TColor; // 阴影颜色
 
-    closebtn: TImgButton;
+//    closebtn: TImgButton;
     close1: TImgButton;
   end;
 
@@ -370,14 +402,6 @@ begin
 
 end;
 
-procedure TCfgForm.Button3Click(Sender: TObject);
-begin
-  if Panel2.Visible then
-    Panel2.Visible := False
-  else
-    Panel2.Visible := True;
-end;
-
 procedure TCfgForm.AddFileInfoToJson(const Key, ImageFileName, FilePath, ToolTip: string);
 begin
   add_json(Key, ImageFileName, FilePath, ToolTip, True, nil);
@@ -424,7 +448,7 @@ end;
 procedure TCfgForm.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   form1.node_rebuilder(Screen.WorkAreaHeight);
-  FreeAndNil(closebtn);
+//  FreeAndNil(closebtn);
   FreeAndNil(close1);
   g_core.nodes.is_configuring := false;
   file_map.Free;
@@ -471,6 +495,73 @@ begin
   end;
 end;
 
+procedure TCfgForm.btnmsg_panelClick(Sender: TObject);
+begin
+  msg_board_state();
+end;
+
+procedure TCfgForm.btnorg_panelClick(Sender: TObject);
+begin
+  org_board_state();
+end;
+
+procedure TCfgForm.msg_board_state;
+begin
+  p1.Parent := p_org;
+  p1.Visible := true;
+  p1.Align := alClient;
+  pbottom.Visible := false;
+  pnl1.Visible:=False;
+
+  btnmsg_panel.Transparent := False;
+  btnorg_panel.Transparent := true;
+
+  btnmsg_panel.refresh;
+  btnorg_panel.refresh;
+
+//  edtlookup.Clear;
+//  p_org.Visible := false;
+//  p_contact.Visible := True;
+//
+//  pnl_right_chat.Visible := True;
+//  pnl_right_chat.align := alclient;
+//  pnl_right_info.Visible := false;
+//
+//  btnmsg_panel.Transparent := False;
+//  btnorg_panel.Transparent := true;
+//
+//  btnmsg_panel.refresh;
+//  btnorg_panel.refresh;
+  Label1.refresh;
+//  imgboxFace.refresh;
+
+end;
+
+procedure TCfgForm.org_board_state;
+begin
+  p1.Parent := nil;
+  p1.Visible := false;
+  btnorg_panel.Transparent := false;
+  btnmsg_panel.Transparent := true;
+
+  btnmsg_panel.refresh;
+  btnorg_panel.refresh;
+     pnl1.Visible:=False;
+  pbottom.Visible := true;
+end;
+        procedure TCfgForm.Label1Click(Sender: TObject);
+begin
+       p1.Parent := nil;
+  p1.Visible := false;
+  btnorg_panel.Transparent := false;
+  btnmsg_panel.Transparent := false;
+
+  btnmsg_panel.refresh;
+  btnorg_panel.refresh;
+     pnl1.Visible:=true;
+  pbottom.Visible := False;
+
+end;
 procedure TCfgForm.FormShow(Sender: TObject);
 var
   values: TArray<string>;
@@ -520,34 +611,37 @@ begin
 
   SetWindowCornerPreference(Handle);
 
-  closebtn := TImgButton.Create(self);
-  closebtn.Parent := Panel2;
+//  closebtn := TImgButton.Create(self);
+//  closebtn.Parent := Panel2;
+//
+//  closebtn.Left := filedit.Left + filedit.Width + 20;
+//  closebtn.Top := tip.Top;
+//  closebtn.SetBounds(closebtn.Left, closebtn.top, 48, 48);
+//
+//  closebtn.Image.LoadFromFile(ExtractFilePath(ParamStr(0)) + '/img/add_hover.png');
+//  closebtn.Image1.LoadFromFile(ExtractFilePath(ParamStr(0)) + '/img/add.png');
+//  closebtn.OnClick := Buttoaction_translatoradd;
+//  closebtn.Cursor := crHandpoint;
 
-  closebtn.Left := filedit.Left + filedit.Width + 20;
-  closebtn.Top := tip.Top;
-  closebtn.SetBounds(closebtn.Left, closebtn.top, 48, 48);
+//  close1 := TImgButton.Create(self);
+//  close1.Parent := Panel3;
+//  close1.Align := alRight;
+//
+//  close1.Width := 26;
+//  close1.Height := 32;
+//  close1.Image.LoadFromFile(ExtractFilePath(ParamStr(0)) + '/img/close_hover.png');
+//  close1.Image1.LoadFromFile(ExtractFilePath(ParamStr(0)) + '/img/close.png');
+//  close1.OnClick := closex;
+//  close1.Cursor := crHandpoint;
 
-  closebtn.Image.LoadFromFile(ExtractFilePath(ParamStr(0)) + '/img/add_hover.png');
-  closebtn.Image1.LoadFromFile(ExtractFilePath(ParamStr(0)) + '/img/add.png');
-  closebtn.OnClick := Buttoaction_translatoradd;
-  closebtn.Cursor := crHandpoint;
 
-  close1 := TImgButton.Create(self);
-  close1.Parent := Panel3;
-  close1.Align := alRight;
-
-  close1.Width := 26;
-  close1.Height := 32;
-  close1.Image.LoadFromFile(ExtractFilePath(ParamStr(0)) + '/img/close_hover.png');
-  close1.Image1.LoadFromFile(ExtractFilePath(ParamStr(0)) + '/img/close.png');
-  close1.OnClick := closex;
-  close1.Cursor := crHandpoint;
-
+  btnmsg_panelClick(self);
 end;
 
-procedure TCfgForm.closex(Sender: TObject);
+procedure TCfgForm.Image2MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  close;
+  ReleaseCapture;
+  Perform(WM_SysCommand, $F008, 0);
 end;
 
 procedure TCfgForm.imgEdit1DblClick(Sender: TObject);
@@ -576,6 +670,18 @@ begin
     OpenDlg.Free;
     BringToFront;
   end;
+end;
+
+procedure TCfgForm.ImgPanel2Click(Sender: TObject);
+begin
+  close;
+end;
+
+
+
+procedure TCfgForm.lblokClick(Sender: TObject);
+begin
+Buttoaction_translatoradd(self);
 end;
 
 procedure TCfgForm.ListView1DblClick(Sender: TObject);
