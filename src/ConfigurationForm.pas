@@ -1,4 +1,4 @@
-﻿unit ConfigurationForm;
+unit ConfigurationForm;
 
 interface
 
@@ -539,7 +539,7 @@ end;
 
 procedure TCfgForm.org_board_state;
 begin
-  p1.Parent := nil;
+//  p1.Parent := nil;
   p1.Visible := false;
   btnorg_panel.Transparent := false;
   btnmsg_panel.Transparent := true;
@@ -551,7 +551,7 @@ begin
 end;
         procedure TCfgForm.Label1Click(Sender: TObject);
 begin
-       p1.Parent := nil;
+//       p1.Parent := nil;
   p1.Visible := false;
   btnorg_panel.Transparent := false;
   btnmsg_panel.Transparent := false;
@@ -742,4 +742,3 @@ begin
 end;
 
 end.
-
