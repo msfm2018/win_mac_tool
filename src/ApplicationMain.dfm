@@ -25,9 +25,16 @@ object Form1: TForm1
   object Label1: TLabel
     Left = 168
     Top = 40
-    Width = 36
-    Height = 12
+    Width = 39
+    Height = 17
     Caption = 'Label1'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -14
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    Transparent = False
     Visible = False
   end
 end

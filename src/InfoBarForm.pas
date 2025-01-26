@@ -121,7 +121,7 @@ begin
     Panel.Height := 60;   // 每个 Panel 的高度
     Panel.BevelOuter := bvNone;
     Panel.ParentColor := False;
-    Panel.Color:=$00FA9A49;//$00fdfdfe;//$00FA9A49;
+    Panel.Color:=$00E5E5E5;//$00FA9A49;//$00fdfdfe;//$00FA9A49;
     Panel.StyleElements := [seClient];
     Panel.extendA := FileName;
     Panel.extendB := Path;

@@ -5,7 +5,7 @@ object bottomForm: TbottomForm
   Caption = 'menuform'
   ClientHeight = 678
   ClientWidth = 86
-  Color = 16423497
+  Color = 15066597
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12

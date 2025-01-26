@@ -482,6 +482,8 @@ begin
           label1.Caption := gdraw_text;
           label1.Left := label_left - 1;
           label1.Top := label_top - 1;
+          label1.ParentColor:=false;
+          label1.Color:=$000EADEE;
 
         end;
       end;
