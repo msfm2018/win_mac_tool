@@ -1,4 +1,4 @@
-unit ConfigurationForm;
+﻿unit ConfigurationForm;
 
 interface
 

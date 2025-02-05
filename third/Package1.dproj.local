@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
+    <Transaction>1899-12-30 00:00:00.000.372,=rtl.dcp</Transaction>
     <Transaction>1899-12-30 00:00:00.000.721,C:\Users\Administrator\Documents\Embarcadero\Studio\Projects\Package1.dproj=C:\Users\Administrator\Desktop\xx\StartX\third\Package1.dproj</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.765,=vcl.dcp</Transaction>
     <Transaction>1899-12-30 00:00:00.000.261,=C:\Users\Administrator\Desktop\xx\StartX\third\ImgButton.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.301,=C:\Users\Administrator\Desktop\xx\StartX\third\ImgPanel.pas</Transaction>
     <Transaction>1899-12-30 00:00:00.000.788,=vclimg.dcp</Transaction>
-    <Transaction>1899-12-30 00:00:00.000.372,=rtl.dcp</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.765,=vcl.dcp</Transaction>
   </Transactions>
 </BorlandProject>

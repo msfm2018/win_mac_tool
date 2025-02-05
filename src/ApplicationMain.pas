@@ -11,7 +11,7 @@ uses
   PsAPI, utils, Winapi.GDIPAPI, Winapi.GDIPOBJ, System.SyncObjs, System.Math,
   System.JSON, u_json, ConfigurationForm, Vcl.Menus, InfoBarForm,
   System.Generics.Collections, plug, TaskbarList, PopupMenuManager, event,
-  u_Debug, Vcl.StdCtrls;
+  Vcl.StdCtrls;
 
 type
   TForm1 = class(TForm)
@@ -462,6 +462,27 @@ begin
 
 end;
 
+function FindWindowByProcessId(dwProcessId: DWORD): hWnd;
+var
+  hWnd1: hWnd;
+  dwPid: DWORD;
+begin
+  Result := 0;
+  hWnd1 := GetTopWindow(0); // Get the first window
+
+  // Enumerate all windows to find the one with the matching process ID
+  while hWnd1 <> 0 do
+  begin
+    GetWindowThreadProcessId(hWnd1, @dwPid);
+    if dwPid = dwProcessId then
+    begin
+      Result := hWnd1;
+      Break;
+    end;
+    hWnd1 := GetNextWindow(hWnd1, GW_HWNDNEXT);
+  end;
+end;
+
 procedure TForm1.wndproc(var Msg: tmessage);
 var
   lp: TPoint;
@@ -482,8 +503,8 @@ begin
           label1.Caption := gdraw_text;
           label1.Left := label_left - 1;
           label1.Top := label_top - 1;
-          label1.ParentColor:=false;
-          label1.Color:=$000EADEE;
+          label1.ParentColor := false;
+          label1.Color := $000EADEE;
 
         end;
       end;
@@ -530,6 +551,55 @@ begin
         end;
 
       end;
+
+    WM_clipboard:
+      begin
+  // Retrieve the current mouse position
+        var mousePos: TPoint;
+        GetCursorPos(mousePos);
+
+  // Adjust the position to be 10 units to the right and 10 units down from the mouse cursor
+        mousePos.X := mousePos.X + 10;
+        mousePos.Y := mousePos.Y + 10;
+
+  // Path to your Flutter executable
+        var exepath := ExtractFilePath(ParamStr(0)) + 'clipboard\flutter_application_1.exe';
+
+        var StartupInfo: TStartupInfo;
+        var ProcessInfo: TProcessInformation;
+        var FilePath: string;
+
+        FilePath := exepath; // Path to your Flutter executable
+
+        FillChar(StartupInfo, SizeOf(StartupInfo), 0);
+        StartupInfo.cb := SizeOf(StartupInfo);
+
+  // Create the process
+        if CreateProcess(nil, PChar(FilePath), nil, nil, False, 0, nil, nil, StartupInfo, ProcessInfo) then
+        begin
+    // Wait a moment for the process to create its window
+          Sleep(500); // Give it a brief time to initialize (you may adjust this as needed)
+
+    // Now find the window of the process using the ProcessID
+          var hwnd: hwnd;
+//    hwnd := FindWindowByProcessId(ProcessInfo.dwProcessId);
+          hwnd := FindWindow('FLUTTER_RUNNER_WIN32_WINDOW', 'clipform');
+    // If the window is found, move it to the desired position
+          if hwnd <> 0 then
+          begin
+            SetWindowPos(hwnd, 0, mousePos.X, mousePos.Y, 0, 0, SWP_NOSIZE or SWP_NOZORDER);
+          end;
+
+    // Close the handles to the process and thread
+          CloseHandle(ProcessInfo.hProcess);
+          CloseHandle(ProcessInfo.hThread);
+        end
+        else
+        begin
+          ShowMessage('Failed to start process');
+        end;
+      end;
+
     WM_disActive:   //去掉 利大于弊 如果当前激活的窗口不是目标窗口，则向目标窗口发送消息（PostMessage） 不在最前端的时候
       begin
 //

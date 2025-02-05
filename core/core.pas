@@ -12,6 +12,7 @@ const
   WM_disActive = WM_USER + 1;
   WM_LBUTTON_MESSAGE = WM_USER + 1030;
   WM_defaultStart_MESSAGE = WM_USER + 1031;
+  WM_clipboard = WM_USER + 1041;
 
 type
   _node = class(TImage)
