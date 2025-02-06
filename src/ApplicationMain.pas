@@ -560,7 +560,7 @@ begin
 
   // Adjust the position to be 10 units to the right and 10 units down from the mouse cursor
         mousePos.X := mousePos.X + 10;
-        mousePos.Y := mousePos.Y + 10;
+        mousePos.Y := mousePos.Y - 54;
 
   // Path to your Flutter executable
         var exepath := ExtractFilePath(ParamStr(0)) + 'clipboard\flutter_application_1.exe';
