@@ -520,7 +520,7 @@ begin
     WM_SYSDATE_MESSAGE:
       begin
       weather_show();
-        ShellExecute(0, 'open', PChar('https://www.bing.com/search?q=%E6%97%A5%E5%8E%86'), nil, nil, SW_SHOWNORMAL);
+       // ShellExecute(0, 'open', PChar('https://www.bing.com/search?q=%E6%97%A5%E5%8E%86'), nil, nil, SW_SHOWNORMAL);
       end;
 
     WM_defaultStart_MESSAGE:
