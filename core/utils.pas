@@ -39,6 +39,16 @@ function GetStartMenuApps: pchar; cdecl; external './startMenuApps.dll';
 
 procedure takeappico; cdecl; external './startMenuApps.dll';
 
+// 天气预报
+
+ procedure dll_weather; stdcall; external './weather/ConsoleApplication5.dll';
+
+procedure dll_unweather; stdcall; external './weather/ConsoleApplication5.dll';
+
+procedure weather_show; stdcall; external './weather/ConsoleApplication5.dll';
+
+procedure weather_hide; stdcall; external './weather/ConsoleApplication5.dll';
+
 implementation
 
 end.

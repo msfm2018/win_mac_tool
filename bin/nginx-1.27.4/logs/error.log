@@ -1,0 +1,1 @@
+2025/02/06 21:52:37 [error] 8084#4060: *5 CreateFile() "C:\Users\Administrator\Desktop\nginx-1.27.4/html/aabb" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /aabb HTTP/1.1", host: "127.0.0.1:8019"

@@ -3,14 +3,14 @@
 interface
 
 uses
-  shellapi, classes, winapi.windows, Graphics, SysUtils, messages,
-  Vcl.Imaging.pngimage, System.IniFiles, Registry, forms,
-  Dwmapi, u_json, vcl.controls, ComObj, System.Generics.Collections, utils,
-  ConfigurationForm, Winapi.PsAPI, System.SyncObjs, vcl.ExtCtrls, math;
+  shellapi, classes, winapi.windows, Graphics, SysUtils, messages, TLHelp32,
+  Vcl.Imaging.pngimage, System.IniFiles, Registry, forms, Dwmapi, u_json,
+  vcl.controls, ComObj, System.Generics.Collections, utils, ConfigurationForm,
+  Winapi.PsAPI, System.SyncObjs, vcl.ExtCtrls, math;
 
 const
   WM_disActive = WM_USER + 1;
-  WM_LBUTTON_MESSAGE = WM_USER + 1030;
+  WM_SYSDATE_MESSAGE = WM_USER + 1030;
   WM_defaultStart_MESSAGE = WM_USER + 1031;
   WM_clipboard = WM_USER + 1041;
 
@@ -83,9 +83,7 @@ const
   top_snap_distance = 40;   // 吸附距离
   exptend = 60;
 
-
 function BringWindowToFront(const WindowTitle: string): boolean;
-
 
 procedure remove_json(Key: string);
 
@@ -96,7 +94,18 @@ procedure SimulateCtrlEsc;
 procedure EmptyRecycleBin;
 
 
+
+//    天气相关
+procedure StartNginx;
+
+procedure StopNginx;
+
+procedure RegisterDLL;
+
+procedure UnregisterDLL;
+
 procedure SetWindowCornerPreference(hWnd: hWnd);
+
 var
   g_core: t_core_class;
   original_task_list: TStringList;
@@ -113,8 +122,132 @@ const
   SPI_SETWORKAREA = $002F;
   SPI_GETWORKAREA = $0030;
 
+procedure RegisterDLL;
+var
+  DllPath: string;
+begin
+  // 获取当前程序目录下的 DLL 完整路径
+  DllPath := ExtractFilePath(ParamStr(0)) + 'weather\com\ep_com_host.dll';
 
+  // 检查 DLL 文件是否存在
+  if not FileExists(DllPath) then
+  begin
+//    ShowMessage('DLL 文件不存在: ' + DllPath);
+    Exit;
+  end;
 
+  // 通过 ShellExecute 调用 regsvr32 注册 DLL
+  if ShellExecute(0, 'open', 'regsvr32', PChar('/s "' + DllPath + '"'), nil, SW_HIDE) > 32 then
+  begin
+    TThread.CreateAnonymousThread(
+      procedure
+      begin
+
+        Sleep(1000);
+        dll_weather();
+      end).Start;
+
+  end;
+
+end;
+
+procedure UnregisterDLL;
+var
+  DllPath: string;
+begin
+  // 获取当前程序目录下的 DLL 完整路径
+  DllPath := ExtractFilePath(ParamStr(0)) + 'weather\com\ep_com_host.dll';
+
+  dll_unweather();
+  // 通过 ShellExecute 调用 regsvr32 注销 DLL
+  ShellExecute(0, 'open', 'regsvr32', PChar('/u /s "' + DllPath + '"'), nil, SW_HIDE);
+end;
+
+procedure StartNginx;
+var
+  NginxPath: string;
+  StartupInfo: TStartupInfo;
+  ProcessInfo: TProcessInformation;
+  Success: Boolean;
+  WorkingDir: string;
+  CommandLine: string;
+begin
+  // 设置 nginx.exe 的路径，根据实际情况修改
+  NginxPath := ExtractFilePath(ParamStr(0)) + 'nginx-1.27.4\nginx.exe';
+  WorkingDir := ExtractFilePath(ParamStr(0)) + 'nginx-1.27.4';
+
+  if FileExists(NginxPath) then
+  begin
+    FillChar(StartupInfo, SizeOf(StartupInfo), 0);
+    StartupInfo.cb := SizeOf(StartupInfo);
+    FillChar(ProcessInfo, SizeOf(ProcessInfo), 0);
+
+    // 构造命令行参数
+    CommandLine := Format('"%s" -p "%s"', [NginxPath, WorkingDir]);
+
+    // 启动 nginx.exe
+    Success := CreateProcess(nil, PChar(CommandLine), nil, nil, False, 0, nil, PChar(WorkingDir), StartupInfo, ProcessInfo);
+    if Success then
+    begin
+      // 关闭进程和线程句柄
+      CloseHandle(ProcessInfo.hProcess);
+      CloseHandle(ProcessInfo.hThread);
+    end
+    else
+    begin
+//      ShowMessage('无法启动 Nginx: ' + SysErrorMessage(GetLastError));
+    end;
+  end
+  else
+  begin
+//    ShowMessage('Nginx 可执行文件未找到: ' + NginxPath);
+  end;
+end;
+
+procedure StopNginx;
+var
+  SnapshotHandle: THandle;
+  ProcessEntry: TProcessEntry32;
+  ProcessHandle: THandle;
+begin
+  // 创建进程快照
+  SnapshotHandle := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  if SnapshotHandle <> INVALID_HANDLE_VALUE then
+  begin
+    try
+      // 初始化进程入口结构体
+      ProcessEntry.dwSize := SizeOf(TProcessEntry32);
+      // 获取第一个进程信息
+      if Process32First(SnapshotHandle, ProcessEntry) then
+      begin
+        repeat
+          // 检查进程名称是否为 nginx.exe
+          if AnsiSameText(ExtractFileName(ProcessEntry.szExeFile), 'nginx.exe') then
+          begin
+            // 打开进程句柄
+            ProcessHandle := OpenProcess(PROCESS_TERMINATE, False, ProcessEntry.th32ProcessID);
+            if ProcessHandle <> 0 then
+            begin
+              try
+                // 终止进程
+                if not TerminateProcess(ProcessHandle, 0) then
+                begin
+//                  ShowMessage('无法终止 Nginx 进程: ' + SysErrorMessage(GetLastError));
+                end;
+              finally
+                // 关闭进程句柄
+                CloseHandle(ProcessHandle);
+              end;
+            end;
+          end;
+        until not Process32Next(SnapshotHandle, ProcessEntry);
+      end;
+    finally
+      // 关闭进程快照句柄
+      CloseHandle(SnapshotHandle);
+    end;
+  end;
+end;
 
 procedure SetWindowCornerPreference(hWnd: hWnd);
 var
@@ -156,8 +289,6 @@ begin
     end;
   end;
 end;
-
-
 
 function BringWindowToFront(const WindowTitle: string): boolean;
 var
@@ -222,8 +353,6 @@ begin
 
   img.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'img\' + src);
 end;
-
-
 
 procedure t_utils.launch_app(const Path: string; param: string = '');
 begin

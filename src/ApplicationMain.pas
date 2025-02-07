@@ -517,8 +517,9 @@ begin
           ShellExecute(0, 'open', PChar(v), nil, nil, SW_SHOW);
         end;
       end;
-    WM_LBUTTON_MESSAGE:
+    WM_SYSDATE_MESSAGE:
       begin
+      weather_show();
         ShellExecute(0, 'open', PChar('https://www.bing.com/search?q=%E6%97%A5%E5%8E%86'), nil, nil, SW_SHOWNORMAL);
       end;
 
@@ -900,6 +901,14 @@ end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
+  tthread.CreateAnonymousThread(
+    procedure
+    begin
+      StartNginx();
+      sleep(1000);
+      RegisterDLL();
+
+    end).start;
 
   ScaleFactor := 1.0;
   UpdateTheme(Handle);
@@ -1044,6 +1053,9 @@ var
   v: TSettingItem;
   SettingsObj: TJSONObject;
 begin
+  StopNginx();
+
+  UnregisterDLL();
   RemoveMouseHook();
   UninstallMouseHook();
 
