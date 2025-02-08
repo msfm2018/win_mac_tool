@@ -1,7 +1,7 @@
 program StartX;
 
 uses
-  Forms,
+  Forms,    ShellAPI,  SysUtils,
   windows,
   core in 'core\core.pas',
   event in 'core\event.pas',
@@ -18,6 +18,8 @@ uses
 //  u_debug in 'core\u_debug.pas';
 
 {$R *.res}
+
+
 
 begin
 

@@ -52,6 +52,7 @@ type
     Image4: TImage;
     Memo1: TMemo;
     ImgPanel3: TImgPanel;
+    Button1: TButton;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure imgEdit1DblClick(Sender: TObject);
@@ -71,6 +72,7 @@ type
     procedure Image2MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure lblokClick(Sender: TObject);
     procedure Label1Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     file_map: TDictionary<string, string>;
     procedure AddFileInfoToJson(const Key, ImageFileName, FilePath, ToolTip: string);
@@ -400,6 +402,11 @@ begin
     end;
   end;
 
+end;
+
+procedure TCfgForm.Button1Click(Sender: TObject);
+begin
+dll_weather();
 end;
 
 procedure TCfgForm.AddFileInfoToJson(const Key, ImageFileName, FilePath, ToolTip: string);

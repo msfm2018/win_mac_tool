@@ -672,7 +672,6 @@ object CfgForm: TCfgForm
         TabOrder = 0
         OnMouseEnter = ScrollBox1MouseEnter
         OnMouseLeave = ScrollBox1MouseLeave
-        ExplicitWidth = 257
       end
     end
     object p_org: TPanel
@@ -729,8 +728,6 @@ object CfgForm: TCfgForm
         ViewStyle = vsReport
         OnDblClick = ListView1DblClick
         OnResize = ListView1Resize
-        ExplicitTop = 33
-        ExplicitHeight = 336
       end
       object pbottom: TPanel
         Left = 0
@@ -744,7 +741,6 @@ object CfgForm: TCfgForm
         ParentBackground = False
         TabOrder = 2
         Visible = False
-        ExplicitTop = 414
         object ComboBox1: TComboBox
           Left = 628
           Top = 44
@@ -886,7 +882,7 @@ object CfgForm: TCfgForm
           Left = 737
           Top = 0
           Width = 14
-          Height = 13
+          Height = 17
           Cursor = crSizeNWSE
           Align = alRight
           AutoSize = True
@@ -905,7 +901,6 @@ object CfgForm: TCfgForm
             B001286602160300FA16C9E9B10252C70000000049454E44AE426082}
           OnMouseDown = Image2MouseDown
           ExplicitLeft = 736
-          ExplicitHeight = 17
         end
       end
     end
@@ -919,9 +914,6 @@ object CfgForm: TCfgForm
       Color = clWhite
       ParentBackground = False
       TabOrder = 3
-      ExplicitLeft = 0
-      ExplicitWidth = 522
-      ExplicitHeight = 385
       object Image1: TImage
         Left = 40
         Top = 279
@@ -3549,6 +3541,15 @@ object CfgForm: TCfgForm
         TabOrder = 0
       end
     end
+  end
+  object Button1: TButton
+    Left = 528
+    Top = 409
+    Width = 75
+    Height = 25
+    Caption = 'Button1'
+    TabOrder = 2
+    OnClick = Button1Click
   end
   object ImgList: TImageList
     Left = 256

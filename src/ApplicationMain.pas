@@ -519,7 +519,7 @@ begin
       end;
     WM_SYSDATE_MESSAGE:
       begin
-      weather_show();
+        weather_show();
        // ShellExecute(0, 'open', PChar('https://www.bing.com/search?q=%E6%97%A5%E5%8E%86'), nil, nil, SW_SHOWNORMAL);
       end;
 
@@ -555,6 +555,7 @@ begin
 
     WM_clipboard:
       begin
+      exit;
   // Retrieve the current mouse position
         var mousePos: TPoint;
         GetCursorPos(mousePos);
@@ -901,14 +902,18 @@ end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
-  tthread.CreateAnonymousThread(
-    procedure
-    begin
-      StartNginx();
-      sleep(1000);
-      RegisterDLL();
 
-    end).start;
+//  tthread.CreateAnonymousThread(
+//    procedure
+//    begin
+      StartNginx();
+//        RunNginx();
+//      sleep(3000);
+      RegisterCOM();
+
+      Sleep(2000);
+//
+//    end).start;
 
   ScaleFactor := 1.0;
   UpdateTheme(Handle);
@@ -948,6 +953,8 @@ begin
   InstallMouseHook();
 
   adjust_node_layout(Screen.WorkAreaHeight);
+
+  dll_weather();
 end;
 
 procedure TForm1.smooth_layout_adjustment(Sender: TObject);
@@ -1024,7 +1031,6 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-          //目的 前端窗口是不是它
 
   SetWindowLong(Handle, GWL_EXSTYLE, GetWindowLong(Handle, GWL_EXSTYLE) or WS_EX_LAYERED);
 
@@ -1055,7 +1061,7 @@ var
 begin
   StopNginx();
 
-  UnregisterDLL();
+//  UnregisterCOM();
   RemoveMouseHook();
   UninstallMouseHook();
 

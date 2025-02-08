@@ -49,6 +49,12 @@ procedure weather_show; stdcall; external './weather/ConsoleApplication5.dll';
 
 procedure weather_hide; stdcall; external './weather/ConsoleApplication5.dll';
 
+
+ function RegisterCOM:boolean; stdcall; external './weather/ConsoleApplication5.dll';
+// function UnregisterCOM:boolean; stdcall; external './weather/ConsoleApplication5.dll';
+
+
+
 implementation
 
 end.

@@ -100,11 +100,12 @@ procedure StartNginx;
 
 procedure StopNginx;
 
-procedure RegisterDLL;
-
-procedure UnregisterDLL;
+//procedure RegisterDLL;
+//
+//procedure UnregisterDLL;
 
 procedure SetWindowCornerPreference(hWnd: hWnd);
+
 
 var
   g_core: t_core_class;
@@ -122,46 +123,49 @@ const
   SPI_SETWORKAREA = $002F;
   SPI_GETWORKAREA = $0030;
 
-procedure RegisterDLL;
-var
-  DllPath: string;
-begin
-  // 获取当前程序目录下的 DLL 完整路径
-  DllPath := ExtractFilePath(ParamStr(0)) + 'weather\com\ep_com_host.dll';
 
-  // 检查 DLL 文件是否存在
-  if not FileExists(DllPath) then
-  begin
-//    ShowMessage('DLL 文件不存在: ' + DllPath);
-    Exit;
-  end;
 
-  // 通过 ShellExecute 调用 regsvr32 注册 DLL
-  if ShellExecute(0, 'open', 'regsvr32', PChar('/s "' + DllPath + '"'), nil, SW_HIDE) > 32 then
-  begin
-    TThread.CreateAnonymousThread(
-      procedure
-      begin
-
-        Sleep(1000);
-        dll_weather();
-      end).Start;
-
-  end;
-
-end;
-
-procedure UnregisterDLL;
-var
-  DllPath: string;
-begin
-  // 获取当前程序目录下的 DLL 完整路径
-  DllPath := ExtractFilePath(ParamStr(0)) + 'weather\com\ep_com_host.dll';
-
-  dll_unweather();
-  // 通过 ShellExecute 调用 regsvr32 注销 DLL
-  ShellExecute(0, 'open', 'regsvr32', PChar('/u /s "' + DllPath + '"'), nil, SW_HIDE);
-end;
+//
+//procedure RegisterDLL;
+//var
+//  DllPath: string;
+//begin
+//  // 获取当前程序目录下的 DLL 完整路径
+//  DllPath := ExtractFilePath(ParamStr(0)) + 'weather\com\ep_com_host.dll';
+//
+//  // 检查 DLL 文件是否存在
+//  if not FileExists(DllPath) then
+//  begin
+////    ShowMessage('DLL 文件不存在: ' + DllPath);
+//    Exit;
+//  end;
+//
+//  // 通过 ShellExecute 调用 regsvr32 注册 DLL
+//  if ShellExecute(0, 'open', 'regsvr32', PChar('/s "' + DllPath + '"'), nil, SW_HIDE) > 32 then
+//  begin
+//    TThread.CreateAnonymousThread(
+//      procedure
+//      begin
+//
+//        Sleep(1000);
+//        dll_weather();
+//      end).Start;
+//
+//  end;
+//
+//end;
+//
+//procedure UnregisterDLL;
+//var
+//  DllPath: string;
+//begin
+//  // 获取当前程序目录下的 DLL 完整路径
+//  DllPath := ExtractFilePath(ParamStr(0)) + 'weather\com\ep_com_host.dll';
+//
+//  dll_unweather();
+//  // 通过 ShellExecute 调用 regsvr32 注销 DLL
+//  ShellExecute(0, 'open', 'regsvr32', PChar('/u /s "' + DllPath + '"'), nil, SW_HIDE);
+//end;
 
 procedure StartNginx;
 var
@@ -172,6 +176,7 @@ var
   WorkingDir: string;
   CommandLine: string;
 begin
+
   // 设置 nginx.exe 的路径，根据实际情况修改
   NginxPath := ExtractFilePath(ParamStr(0)) + 'nginx-1.27.4\nginx.exe';
   WorkingDir := ExtractFilePath(ParamStr(0)) + 'nginx-1.27.4';
