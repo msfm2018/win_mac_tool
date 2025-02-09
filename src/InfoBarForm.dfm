@@ -14,18 +14,4 @@ object bottomForm: TbottomForm
   OnClose = FormClose
   OnShow = FormShow
   TextHeight = 14
-  object ScrollBox1: TScrollBox
-    Left = 0
-    Top = 0
-    Width = 100
-    Height = 678
-    BevelInner = bvNone
-    BevelOuter = bvNone
-    BorderStyle = bsNone
-    Color = 16423497
-    Ctl3D = False
-    ParentColor = False
-    ParentCtl3D = False
-    TabOrder = 0
-  end
 end
