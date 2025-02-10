@@ -7,7 +7,6 @@ uses
   Vcl.Imaging.pngimage, System.IniFiles, Registry, forms, Dwmapi, u_json,
   vcl.controls, ComObj, System.Generics.Collections, utils, ConfigurationForm,
   Winapi.PsAPI, System.SyncObjs, vcl.ExtCtrls, math;
-
 const
   WM_disActive = WM_USER + 1;
   WM_SYSDATE_MESSAGE = WM_USER + 1030;
@@ -125,48 +124,6 @@ const
 
 
 
-//
-//procedure RegisterDLL;
-//var
-//  DllPath: string;
-//begin
-//  // 获取当前程序目录下的 DLL 完整路径
-//  DllPath := ExtractFilePath(ParamStr(0)) + 'weather\com\ep_com_host.dll';
-//
-//  // 检查 DLL 文件是否存在
-//  if not FileExists(DllPath) then
-//  begin
-////    ShowMessage('DLL 文件不存在: ' + DllPath);
-//    Exit;
-//  end;
-//
-//  // 通过 ShellExecute 调用 regsvr32 注册 DLL
-//  if ShellExecute(0, 'open', 'regsvr32', PChar('/s "' + DllPath + '"'), nil, SW_HIDE) > 32 then
-//  begin
-//    TThread.CreateAnonymousThread(
-//      procedure
-//      begin
-//
-//        Sleep(1000);
-//        dll_weather();
-//      end).Start;
-//
-//  end;
-//
-//end;
-//
-//procedure UnregisterDLL;
-//var
-//  DllPath: string;
-//begin
-//  // 获取当前程序目录下的 DLL 完整路径
-//  DllPath := ExtractFilePath(ParamStr(0)) + 'weather\com\ep_com_host.dll';
-//
-//  dll_unweather();
-//  // 通过 ShellExecute 调用 regsvr32 注销 DLL
-//  ShellExecute(0, 'open', 'regsvr32', PChar('/u /s "' + DllPath + '"'), nil, SW_HIDE);
-//end;
-
 procedure StartNginx;
 var
   NginxPath: string;
@@ -186,7 +143,8 @@ begin
     FillChar(StartupInfo, SizeOf(StartupInfo), 0);
     StartupInfo.cb := SizeOf(StartupInfo);
     FillChar(ProcessInfo, SizeOf(ProcessInfo), 0);
-
+    StartupInfo.dwFlags := STARTF_USESHOWWINDOW;
+     StartupInfo.wShowWindow := SW_HIDE; // Hide the window
     // 构造命令行参数
     CommandLine := Format('"%s" -p "%s"', [NginxPath, WorkingDir]);
 
