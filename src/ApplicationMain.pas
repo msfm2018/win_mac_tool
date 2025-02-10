@@ -555,7 +555,7 @@ begin
 
     WM_clipboard:
       begin
-      exit;
+        exit;
   // Retrieve the current mouse position
         var mousePos: TPoint;
         GetCursorPos(mousePos);
@@ -903,17 +903,17 @@ end;
 procedure TForm1.FormShow(Sender: TObject);
 begin
 
-//  tthread.CreateAnonymousThread(
-//    procedure
-//    begin
+  tthread.CreateAnonymousThread(
+    procedure
+    begin
       StartNginx();
-//        RunNginx();
-//      sleep(3000);
+
+      sleep(2000);
       RegisterCOM();
 
       Sleep(2000);
-//
-//    end).start;
+      dll_weather();
+    end).start;
 
   ScaleFactor := 1.0;
   UpdateTheme(Handle);
@@ -954,7 +954,6 @@ begin
 
   adjust_node_layout(Screen.WorkAreaHeight);
 
-  dll_weather();
 end;
 
 procedure TForm1.smooth_layout_adjustment(Sender: TObject);
