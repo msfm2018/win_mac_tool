@@ -28,6 +28,7 @@
 ![image](https://github.com/msfm2018/WinBarDock/blob/v7.8.3/image/desktop.png)
 ![image](https://github.com/msfm2018/WinBarDock/blob/v7.8.3/image/44.png)
 
+![image](https://github.com/msfm2018/win_mac_tool/blob/v7.9.3/3dweather.png)
 ![image](https://github.com/msfm2018/win_mac_tool/blob/v2.2/b.png)
 ![image](https://github.com/msfm2018/win_mac_tool/blob/v2.2/a.png)
 ![image](https://github.com/msfm2018/win_mac_tool/blob/v2.2/c.png)
